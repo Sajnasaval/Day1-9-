@@ -1,0 +1,625 @@
+1. PF CREATION 
+ Columns . . . :    1  71            Edit                      TEN21LIB/TRNGSRC 
+ SEU==>                                                                  PERSON 
+ FMT PF .....A..........T.Name++++++RLen++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00      A          R REC                                                   
+0002.00      A            NAME          25A                                     
+0003.00      A            CITY          20A                                     
+0004.00      A            DOB             L         DATFMT(*EUR)                
+0005.00      A            GENDER         1A         VALUES('M' 'F') CHECK(ME)   
+0006.00      A            AGE            3P 0                                   
+0006.01      A            MOBILENO        L                                     
+0007.00      A            PINCODE        6P 0                                   
+        ****************** End of data **************************************** 
+
+ 2. EMPLOYEE  
+
+  FMT PF .....A..........T.Name++++++RLen++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00                                             UNIQUE                      
+0002.00                                                                         
+0003.00      A          R EMPREC                                                
+0004.00      A            EMPID          6P 0                                   
+0005.00      A            NAME          25A                                     
+0006.00      A            DEPT           2P 0                                   
+0007.00      A            GENDER         1A                                     
+0008.00      A            DOJ             L         DATFMT(*EUR)                
+0009.00      A            SALARY         8P 2                                   
+0010.00      A          K EMPID                                               
+
+
+3.LIFO
+ Columns . . . :    1  71            Edit                      TEN21LIB/TRNGSRC 
+ SEU==>                                                              EMPMASLIFO 
+ FMT PF .....A..........T.Name++++++RLen++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00                                             LIFO                        
+0002.00                                                                         
+0003.00      A          R EMPREC                                                
+0004.00      A            EMPID          6P 0       TEXT('MUST BE UNQUIE')      
+0005.00      A            NAME          25A                                     
+0006.00      A            DEPT           2P 0                                   
+0007.00      A            GENDER         1A                                     
+0008.00      A            DOJ             L         DATFMT(*EUR)                
+0009.00      A            SALARY         8P 2                                   
+0010.00      A          K EMPID                                                 
+        ****************** End of data **************************************** 
+                                                                                
+4. CREATING LF
+
+ Columns . . . :    1  71            Edit                      TEN21LIB/TRNGSRC 
+ SEU==>                                                                  EMPLIF 
+ FMT LF .....A..........T.Name++++++.Len++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00      A          R EREC                      PFILE(TEN21LIB/SNBIL)       
+0002.00      A            EMPID                                                 
+0003.00      A            NAME                                                  
+0004.00      A            DEPT                                                  
+0005.00      A            GENDER                                                
+0006.00      A            SALARY                                                
+0007.00      A          K EMPID                                                 
+0008.00      A          S DEPT                      COMP(EQ 20)                 
+        ****************** End of data **************************************** 
+
+5. LF WITH OPERATIONS
+
+ SEU==>                                                                 EMPLIFD 
+ FMT LF .....A..........T.Name++++++.Len++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00                                             DYNSLT                      
+0002.00      A          R EREC                      PFILE(TEN21LIB/SNBIL)       
+0003.00      A            EMPID                                                 
+0004.00      A            NAME                                                  
+0005.00      A            DEPT                                                  
+0006.00      A            GENDER                                                
+0007.00      A            SALARY                                                
+0008.00      A          K EMPID                                                 
+0009.00      A* WHEN NAME TYPE IS BLANK ON 2ND COND IT IS LOGICAL "AND"         
+0010.00      A* MEANS BOTH COND MUST BE TRUE TO FETCH REC FROM PF               
+0011.00      A          S DEPT                      COMP(EQ 20)                 
+0012.00      A            GENDER                    VALUES('F')                 
+        ****************** End of data **************************************** 
+                                                                                
+
+ SEU==>                                                                 EMPLIF2 
+ FMT LF .....A..........T.Name++++++.Len++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00      A          R EREC                      PFILE(TEN21LIB/SNBIL)       
+0002.00      A            EMPID                                                 
+0003.00      A            NAME                                                  
+0004.00      A            DEPT                                                  
+0005.00      A            GENDER                                                
+0006.00      A            SALARY                                                
+0007.00      A          K EMPID                                                 
+0008.00      A* WHEN NAME TYPE IS 'S' SECOND CONDITION IT IS LOGICAL "OR"       
+0009.00      A* MEANS BOTH CONITION MUST BE TRUE TO FETCH REC FROM PF           
+0010.00      A          S DEPT                      COMP(EQ 20)                 
+0011.00      A          S GENDER                    VALUES('F')                 
+        ****************** End of data **************************************** 
+                                                                                
+                                                                                
+
+SEU==>                                                                 EMPLIF3 
+ FMT LF .....A..........T.Name++++++.Len++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00      A          R EREC                      PFILE(TEN21LIB/SNBIL)       
+0002.00      A            EMPID                                                 
+0003.00      A            NAME                                                  
+0004.00      A            DEPT                                                  
+0005.00      A            GENDER                                                
+0006.00      A            SALARY                                                
+0007.00      A          K EMPID                                                 
+0008.00      A* WHEN NAME TYPE IS 'S' SECOND CONDITION IT IS LOGICAL "OR"       
+0009.00      A* MEANS BOTH CONITION MUST BE TRUE TO FETCH REC FROM PF           
+0010.00      A          S EMPID                     COMP(EQ 101)                
+0011.00      A          S EMPID                     COMP(EQ 401)                
+        ****************** End of data ****************************************    
+
+ SEU==>                                                                 EMPLIF4 
+ FMT LF .....A..........T.Name++++++.Len++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00      A          R EREC                      PFILE(TEN21LIB/SNBIL)       
+0002.00      A            EMPID                                                 
+0003.00      A            NAME                                                  
+0004.00      A            DEPT                                                  
+0005.00      A            GENDER                                                
+0006.00      A            SALARY                                                
+0007.00      A          K EMPID                                                 
+0008.00      A* WHEN NAME TYPE IS BLANK ON 2ND COND IT IS LOGICAL "AND"         
+0009.00      A* MEANS BOTH COND MUST BE TRUE TO FETCH REC FROM PF               
+0010.00      A          S DEPT                      COMP(EQ 20)                 
+0011.00      A            GENDER                    VALUES('F')                 
+        ****************** End of data **************************************** 
+
+
+ FMT LF .....A..........T.Name++++++.Len++TDpB......Functions++++++++++++++++++
+        *************** Beginning of data *************************************
+0001.00      A          R EREC                      PFILE(TEN21LIB/SNBIL)      
+0002.00      A            EMPID                                                
+0003.00      A            NAME                                                 
+0004.00      A            DEPT                                                 
+0005.00      A            GENDER                                               
+0006.00      A            SALARY                                               
+0007.00      A          K SALARY                    DESCEND                    
+        ****************** End of data ****************************************          
+
+ FMT LF .....A..........T.Name++++++.Len++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00      A          R EREC                      PFILE(TEN21LIB/SNBIL)       
+0002.00      A            EMPID                                                 
+0003.00      A            NAME                                                  
+0004.00      A            DEPT                                                  
+0005.00      A            GENDER                                                
+0006.00      A            PAY                       RENAME(SALARY)              
+0007.00      A          K EMPID                                                 
+0008.00      A          O DEPT                      COMP(EQ 20)                 
+0009.00      A          S GENDER                    VALUES('F')                 
+        ****************** End of data **************************************** 
+   
+  FMT LF .....A..........T.Name++++++.Len++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00      A          R EREC                      PFILE(TEN21LIB/SNBIL)       
+0002.00      A            EMPID                                                 
+0003.00      A            NAME                                                  
+0004.00      A            DEPT                                                  
+0005.00      A            GENDER                                                
+0006.00      A            PAY                       RENAME(SALARY)              
+0007.00      A            NM             1A  I      SST(NAME 1 1)               
+0008.00      A          K EMPID                                                 
+0009.00      A          S NM                        VALUES('A' 'S')             
+        ****************** End of data **************************************** 
+
+6. UNION
+ SEU==>                                                                   INV22
+ FMT PF .....A..........T.Name++++++RLen++TDpB......Functions++++++++++++++++++
+        *************** Beginning of data *************************************
+0001.00                 R INVREC1                                              
+0002.00      A            INVNO          6P 0                                  
+0003.00      A            CUSTID         5A                                    
+0004.00      A            INVAMT         8P 2                                  
+0005.00      A            INVSTS         1A                                    
+0006.00      A            INVDT           L         DATFMT(*EUR)               
+0007.00      A          K INVNO                                                
+        ****************** End of data ****************************************     
+
+ SEU==>                                                                   INV23 
+ FMT PF .....A..........T.Name++++++RLen++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00                 R INVREC2                                               
+0002.00      A            INVNO          6P 0                                   
+0003.00      A            CUSTID         5A                                     
+0004.00      A            INVAMT         8P 2                                   
+0005.00      A            INVSTS         1A                                     
+0006.00      A            CUSTADDR      20A                                     
+0007.00      A          K INVNO                                                 
+        ****************** End of data **************************************** 
+
+                                                                  
+ FMT LF .....A..........T.Name++++++.Len++TDpB......Functions+++++++++++++
+        *************** Beginning of data ********************************
+0001.00      A          R INVREC1                   PFILE(INV22 INV23)    
+0002.00      A                                      FORMAT(INV22)         
+0003.00      A          K INVNO                                           
+  ****************** End of data **************************************** 
+
+
+7.JOIN
+
+ FMT PF .....A..........T.Name++++++RLen++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00                                             UNIQUE                      
+0002.00      A          R MSTREC                                                
+0003.00      A            ACNO           8P 0                                   
+0004.00      A            NAME          20A                                     
+0005.00      A            ACTYPE         2A         VALUES('SB' 'RD' 'FD')      
+0006.00      A            DTOPEN          L         DATFMT(*EUR)                
+0007.00      A            BALANCE       12P 2                                   
+0008.00      A          K ACNO                                                  
+ ****************** End of data **************************************** 
+
+
+ Columns . . . :    1  71            Edit                      TEN21LIB/TRNGSRC 
+ SEU==>                                                                BANKTRAN 
+ FMT PF .....A..........T.Name++++++RLen++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00      A          R TRNREC                                                
+0002.00      A            SLIPNO         6P 0                                   
+0003.00      A            ACNO           8P 0                                   
+0004.00      A            DTTRN           L         DATFMT(*EUR)                
+0005.00      A            TRNTYPE        2A         VALUES('CR' 'DR')           
+0006.00      A            TRNMODE        3A         VALUES('CSH' 'CHQ')         
+0007.00      A            TRNAMT         8P 2                                   
+0008.00      A          K SLIPNO                                                
+        ****************** End of data **************************************** 
+
+ SEU==>                                                                   BKJLF 
+ FMT LF .....A..........T.Name++++++.Len++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00      A          R BKJREC                    JFILE(BANKMAST BANKTRAN)    
+0002.00      A          J                           JOIN(BANKMAST BANKTRAN)     
+0003.00      A                                      JFLD(ACNO ACNO)             
+0004.00      A            ACNO                      JREF(BANKMAST)              
+0005.00      A            NAME                                                  
+0006.00      A            ACTYPE                                                
+0007.00      A            BALANCE                                               
+0008.00      A            SLIPNO                                                
+0009.00      A            TRNTYPE                                               
+0010.00      A            TRNMODE                                               
+0011.00      A            DTTRN                                                 
+0012.00      A            TRNAMT                                                
+0013.00      A          K ACNO                                                  
+        ****************** End of data **************************************** 
+                                                                                
+
+ SEU==>                                                                  BKJLF1 
+ FMT LF .....A..........T.Name++++++.Len++TDpB......Functions++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00                                             JDFTVAL                     
+0002.00      A          R BKJREC                    JFILE(BANKMAST BANKTRAN)    
+0003.00      A          J                           JOIN(BANKMAST BANKTRAN)     
+0004.00      A                                      JFLD(ACNO ACNO)             
+0005.00      A* JDUPSEQ JOIN LEVEL FUNCION ARRANGES MULIPLE SECONDARIES ON ANY  
+0006.00      A* SECONDARY FILE FEILD                                            
+0007.00                                             JDUPSEQ(TRNAMT *DESCEND)    
+0008.00      A            ACNO                      JREF(BANKMAST)              
+0009.00      A            NAME                                                  
+0010.00      A            ACTYPE                                                
+0011.00      A            BALANCE                                               
+0012.00      A            SLIPNO                                                
+0013.00      A            TRNTYPE                                               
+0014.00      A            TRNMODE                                               
+0015.00      A            DTTRN                                                 
+0016.00      A            TRNAMT                                                
+0017.00      A          K ACNO                                                  
+        ****************** End of data **************************************** 
+
+8. CALCULATOR
+
+ SEU==>                                                                   CALCR 
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00 FCALCD     CF   E             WORKSTN                                   
+0002.00 C                   DOW       NOT *IN53                                 
+0003.00 C                   EXFMT     NUMENT                                    
+0004.00 C                   EVAL      MSG=*BLANK                                
+0005.00 C   53              LEAVE                                               
+0006.00 C                   IF        OPT='A'                                   
+0007.00 C                   EVAL      C=A+B                                     
+0008.00 C                   ENDIF                                               
+0009.00 C                   IF        OPT='S'                                   
+0010.00 C                   EVAL      C=A-B                                     
+0011.00 C                   ENDIF                                               
+0012.00 C                   IF        OPT='M'                                   
+0013.00 C                   EVAL      C=A*B                                     
+0014.00 C                   ENDIF                                               
+0015.00 C                   IF        OPT='D'                                   
+0016.00 C                   IF        B=0                                       
+0017.00 C                   EVAL      MSG='DIVISION BY 0 INVALID'               
+0018.00 C                   ITER                                                
+0019.00 C                   ENDIF                                               
+0020.00 C                   EVAL      C=A/B                                     
+0021.00 C                   ENDIF                                               
+0022.00 C                   ENDDO                                               
+0023.00 C                   EVAL      *INLR=*ON                                 
+        ****************** End of data **************************************** 
+
+9. Practising RPG programs                                                                                                                                                              
+
+ SEU==>                                                                   WISHR 
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00 FWISHD     CF   E             WORKSTN                                   
+0002.00 C                   DOW       NOT *IN53                                 
+0003.00 C                   EXFMT     SRC                                       
+0004.00 C   53              LEAVE                                               
+0005.00 C                   EVAL      MSG='GOOD MORNING'+' '+A                  
+0006.00 C                   ENDDO                                               
+0007.00 C                   EVAL      *INLR=*ON                                 
+        ****************** End of data **************************************** 
+
+ SEU==>                                                                   VOTER 
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00 FVOTED     CF   E             WORKSTN                                   
+0001.01 DSALUTE           S              6A   INZ('SIR')                        
+0002.00 C                   DOW       NOT *IN03                                 
+0003.00 C                   EXFMT     SCR                                       
+0004.00 C   03              LEAVE                                               
+0005.00 C                   EVAL      SALUTE='SIR'                              
+0006.00 C                   IF        GN='F'                                    
+0007.00 C                   EVAL      SALUTE='MADAM'                            
+0008.00 C                   ENDIF                                               
+0009.00 C                   IF        AG>18 AND NA='INDIAN'                     
+0010.00 C                   EVAL      MSG=SALUTE+' YOU CAN VOTE...'             
+0011.00 C                   ENDIF                                               
+0012.00 C                   IF        AG<18                                     
+0013.00 C                   EVAL      MSG=SALUTE+' YOU ARE TOO YOUNG TO VOTE'   
+0014.00 C                   ENDIF                                               
+0015.00 C                   IF        NA<>'INDIAN'        
+0016.00 C                   EVAL      MSG=SALUTE+' YOU CAN NOT VOTE IN INDIA'   
+0017.00 C                   ENDIF                                               
+0018.00 C                   ENDDO                                               
+0019.00 C                   EVAL      *INLR=*ON                                 
+        ****************** End of data **************************************** 
+
+10.File operation
+                      
+ SEU==>                                                                LEARNSEU 
+ FMT *   *. 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+. 
+        *************** Beginning of data ************************************* 
+0000.01 F*** UPDATE/DELETE PF REC IN PROGRAM                                    
+0000.02 F*** NESTED LOOP AFTER RECORD FOUND                                     
+0000.03 F*** ALSO USED OVERLAY FOR SCREENS                                      
+0000.04 F*** EXPLICIT OPEN PF USROPN                                            
+0001.00 FEMPLOYEE  UF   E           K DISK    USROPN                            
+0002.00 FEMPUPD    CF   E             WORKSTN                                   
+0004.00 C                   EVAL      *IN65=*ON                                 
+0005.00 C                   DOW       NOT *IN03                                 
+0006.00 C                   WRITE     HEADER                                    
+0007.00 C                   WRITE     FOOTER                                    
+0007.01 C                   EXFMT     EMPPUR                                    
+0008.00 C                   EXFMT     EMPPUR                                    
+0008.01 C                   OPEN      EMPLOYEE                                  
+0009.00 C   03              LEAVE                                               
+0010.00 C     EMPID         CHAIN     EMPREC                                    
+0011.00 C                   IF        NOT %FOUND(EMPLOYEE)    
+C012.00 C                   EVAL      MSG='NO SUCH EMPID.ENTER VALID'           
+0016.00 C                   DOW       *IN65                                     
+0017.00 C                   WRITE     HEADER                                    
+0018.00 C                   WRITE     FOOTER                                    
+0020.00 C   03              LEAVE                                               
+0021.00 C                   IF        *IN04                                     
+0022.00 C                   UPDATE    EMPREC                                    
+0023.00 C                   CLEAR                   EMPPUR                      
+0024.00 C                   EVAL      *IN65=*OFF                                
+0025.00 C                   LEAVE  
+0026.00 C                   ENDIF                               
+0027.00 C                   IF        *IN05                     
+0028.00 C                   DELETE    EMPREC                    
+0029.00 C                   CLEAR                   EMPPUR      
+0030.00 C                   EVAL      *IN65=*OFF                
+0031.00 C                   LEAVE                               
+0032.00 C                   ENDIF                               
+0033.00 C                   IF        *IN12                     
+0034.00 C                   CLEAR                   EMPPUR      
+0035.00 C                   EVAL      *IN65=*OFF                
+0036.00 C                   LEAVE                               
+0037.00 C                   ENDIF                               
+0038.00 C                   ENDDO                               
+0039.00 C                   ENDDO                               
+0040.00 C                   CLOSE     EMPLOYEE                  
+0040.01 C                   CLOSE     EMPLOYEE                  
+0040.02 C                   CLOSE     EMPLOYEE      
+0040.02 C                   CLOSE     EMPLOYEE    
+0041.00 C                   EVAL      *INLR=*ON   
+  ****************** End of data ****************************************
+
+11. 	employee update delete also overlay screen
+
+ SEU==>                                                                 EMPUPDR 
+ FMT *   *. 1 ...+... 2 ...+... 3 ...+... 4 ...+... 5 ...+... 6 ...+... 7 ...+. 
+        *************** Beginning of data ************************************* 
+0000.01 F*** UPDATE/DELETE PF REC IN PROGRAM                                    
+0000.02 F*** NESTED LOOP AFTER RECORD FOUND                                     
+0000.03 F*** ALSO USED OVERLAY FOR SCREENS                                      
+0000.04 F*** EXPLICIT OPEN PF USROPN                                            
+0001.00 FEMPLOYEE  UF   E           K DISK    USROPN                            
+0002.00 FEMPUPD    CF   E             WORKSTN                                   
+0003.00 C                   OPEN      EMPLOYEE                                  
+0004.00 C                   EVAL      *IN65=*ON                                 
+0005.00 C                   DOW       NOT *IN03                                 
+0006.00 C                   WRITE     HEADER                                    
+0007.00 C                   WRITE     FOOTER                                    
+0008.00 C                   EXFMT     EMPPUR                                    
+0009.00 C   03              LEAVE                                               
+0010.00 C     EMPID         CHAIN     EMPREC                                    
+0011.00 C                   IF        NOT %FOUND(EMPLOYEE)                      
+0012.00 C                   EVAL      MSG='NO SUCH EMPID.ENTER VALID'           
+0013.00 C                   ITER                 
+0014.00 C                   ENDIF                
+0015.00 C                   EVAL      *IN65=*ON  
+0016.00 C                   DOW       *IN65      
+0017.00 C                   WRITE     HEADER     
+0018.00 C                   WRITE     FOOTER     
+0019.00 C                   EXFMT     EMPPUR     
+0020.00 C   03              LEAVE                
+0021.00 C                   IF        *IN04      
+0022.00 C                   UPDATE    EMPREC                 
+0023.00 C                   CLEAR                   EMPPUR   
+0024.00 C                   EVAL      *IN65=*OFF             
+0025.00 C                   LEAVE                            
+0026.00 C                   ENDIF                            
+0027.00 C                   IF        *IN05                  
+0028.00 C                   DELETE    EMPREC                 
+0029.00 C                   CLEAR                   EMPPUR   
+0030.00 C                   EVAL      *IN65=*OFF             
+0031.00 C                   LEAVE                          
+0032.00 C                   ENDIF                          
+0033.00 C                   IF        *IN12                
+0034.00 C                   CLEAR                   EMPPUR 
+0035.00 C                   EVAL      *IN65=*OFF           
+0036.00 C                   LEAVE                          
+0037.00 C                   ENDIF                          
+0038.00 C                   ENDDO                          
+0039.00 C                   ENDDO                          
+0040.00 C                   CLOSE     EMPLOYEE                                  
+0041.00 C                   EVAL      *INLR=*ON                                 
+        ****************** End of data ****************************************                                                              
+
+12.RECORD NAVIGATION
+
+ Columns . . . :    6  76            Edit                      TEN21LIB/TRNGSRC
+ SEU==>                                                               NAVIGATER
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++
+        *************** Beginning of data *************************************
+0001.00 FEMPMAIN   UF   E           K DISK                                     
+0002.00 FNAVIGATED CF   E             WORKSTN                                  
+0003.00 DM1               C                   CONST('ALREADY AT TOP')          
+0004.00 DM2               C                   CONST('ALREADY AT BOTTOM')       
+0005.00 DM3               C                   CONST('NO SUCH EMP-ID')          
+0006.00 DM4               C                   CONST('RECORD HAS BEEN DELETED') 
+0007.00 C     *LOVAL        SETLL     EMPREC                                   
+0008.00 C                   READ      EMPREC                                   
+0009.00 C                   DOW       NOT *IN03                                
+0010.00 C                   WRITE     HEADER                                   
+0011.00 C                   WRITE     FOOTER                                   
+0012.00 C                   EXFMT     NAVSCR                                   
+0013.00 C   03              LEAVE                                              
+0014.00 C* SELECT BLOCK MAKES SWITCH-CASE IN RPG..EACH WHEN DEFINES 1 CASE     
+0015.00 C                   SELECT                                                                                
+0016.00 C                   WHEN      *IN04                               
+0017.00 C* GOTO TO TOP OF FILE                                            
+0018.00 C     *LOVAL        SETLL     EMPREC                              
+0019.00 C                   READ      EMPREC                              
+0020.00 C                   WHEN      *IN05                               
+0020.01 C* GOTO BOTTOM OF FILE                                            
+0021.00 C     *HIVAL        SETLL     EMPREC                              
+0022.00 C                   READP     EMPREC                              
+0023.00 C                   WHEN      *IN06                               
+0023.01 C** GOTO PREV REC  
+0024.00 C                   READP     EMPREC                              
+0025.00 C                   IF        %EOF                                
+0026.00 C     *LOVAL        SETLL     EMPREC                              
+0027.00 C                   READ      EMPREC                              
+0028.00 C                   EVAL      MSG=M1                              
+0029.00 C                   ENDIF                                         
+0030.00 C                   WHEN      *IN07                               
+0031.00 C                   READ      EMPREC                              
+0032.00 C                   IF        %EOF                                
+0033.00 C     *HIVAL        SETLL     EMPREC                              
+0034.00 C                   READP     EMPREC                              
+0035.00 C                   EVAL      MSG=M2                              
+0036.00 C                   ENDIF                                         
+0037.00 C                   WHEN      *IN08                               
+0037.01 C** SEARCH.... DISPLAY WINDOW ACCEPT KEY VALUE AND SEARCH 8issearc
+0038.00 C                   EXFMT     EMPIDQRY                            
+0039.00 C     QEMPID        CHAIN     EMPREC                              
+0040.00 C                   IF        NOT %FOUND  
+0041.00 C                   EVAL      MSG=M3                                   
+0042.00 C                   ENDIF                                              
+0043.00 C                   WHEN      *IN09                                    
+0044.00 C                   DELETE    EMPREC                                   
+0045.00 C                   READ      EMPREC                                   
+0046.00 C                   ENDSL                                              
+0047.00 C                   ENDDO                                              
+0048.00 C                   EVAL      *INLR=*ON                                
+        ****************** End of data ****************************************
+
+ SEU==>                                                               OBSERVER1 
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00 FEMPMAIN   IF   E           K DISK                                      
+0002.00 C     *LOVAL        SETLL     EMPREC                                    
+0003.00 C                   READ      EMPREC                                    
+0004.00 C     NAME          DSPLY                                               
+0005.00 C     *HIVAL        SETLL     EMPREC                                    
+0006.00 C                   READP     EMPREC                                    
+0007.00 C     NAME          DSPLY                                               
+0008.00 C                   EVAL      *INLR=*ON                                 
+        ****************** End of data **************************************** 
+                                                                                
+                                                                                
+ SEU==>                                                              OBSERVER2
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords++++++++++++++++++++++++
+        *************** Beginning of data ************************************
+0001.00 FEMPMAIN   IF   E           K DISK                                    
+0003.00 DID               S              6P 0 INZ(101)                        
+0004.00 C     ID            SETLL     EMPREC                                  
+0004.01 C                   READ      EMPREC                                  
+0005.00 C     ID            DSPLY                                             
+0006.00 C     NAME          DSPLY                                             
+0006.01 C                   READP     EMPREC                                  
+0006.02 C     NAME          DSPLY                                             
+0007.00 C                   EVAL      *INLR=*ON                               
+        ****************** End of data ***************************************
+ 
+ Columns . . . :    6  76            Edit                      TEN21LIB/TRNGSRC 
+ SEU==>                                                               OBSERVER3 
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00 FEMPLF8    IF   E           K DISK                                      
+0002.00 DQDEPT            S              2P 0 INZ(30)                           
+0003.00 C     QDEPT         SETLL     EMPREC                                    
+0004.00 C     QDEPT         READE     EMPREC                                    
+0005.00 C                   DOW       NOT %EOF                                  
+0006.00 C     NAME          DSPLY                                               
+0007.00 C     QDEPT         READE     EMPREC                                    
+0008.00 C                   ENDDO                                               
+0009.00 C                   EVAL      *INLR=*ON                                 
+        ****************** End of data **************************************** 
+                                                                                
+                                                                                
+ SEU==>                                                               OBSERVER4 
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00 FEMPMAIN   IF   E             DISK    RENAME(EMPREC:MYREC)              
+0002.00 C                   DO        8                                         
+0003.00 C                   READ      MYREC                                     
+0004.00 C     NAME          DSPLY                                               
+0005.00 C                   ENDDO                                               
+0006.00 C                   EVAL      *INLR=*ON                                 
+        ****************** End of data ****************************************   
+
+ SEU==>                                                               OBSERVER5 
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00 FEMPMAIN   IF   E             DISK    RENAME(EMPREC:MYREC)              
+0001.01 DRRN              S              3P 0 INZ(20)                           
+0001.02 C     RRN           CHAIN     MYREC                                     
+0001.05 C     NAME          DSPLY                                               
+0006.00 C                   EVAL      *INLR=*ON                                 
+        ****************** End of data **************************************** 
+                                                                                
+
+ SEU==>                                                               OBSERVER6 
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00 FEMPMAIN   IF   E             DISK    RENAME(EMPREC:MYREC)              
+0001.01 DRRN              S              3P 0 INZ(20)                           
+0001.02 C     RRN           CHAIN     MYREC                                     
+0001.05 C     NAME          DSPLY                                               
+0001.06 C                   READP     MYREC                                     
+0001.07 C     NAME          DSPLY                                               
+0006.00 C                   EVAL      *INLR=*ON                                 
+        ****************** End of data **************************************** 
+                                                                                 
+13.SUBFILE AND SUBROUTIEN.
+
+ SEU==>                                                                DEPTQRYR 
+ FMT FX FFilename++IPEASF.....L.....A.Device+.Keywords+++++++++++++++++++++++++ 
+        *************** Beginning of data ************************************* 
+0001.00 FEMPLF8    IF   E           K DISK                                      
+0002.00 FDEPTQRYD  CF   E             WORKSTN SFILE(QRYSFL:QRYRRN)              
+0003.00 DQRYRRN           S              3P 0 INZ(*ZEROS)                       
+0004.00 C                   EVAL      *IN57=*OFF                                
+0005.00 C                   EVAL      *IN58=*ON                                 
+0006.00 C                   DOW       NOT *IN03                                 
+0006.01 C                   WRITE     FOOTER                                    
+0007.00 C                   EXFMT     QRYCTL                                    
+0008.00 C   03              LEAVE                                               
+0009.00 C                   EXSR      FILLSFL                                   
+0010.00 C                   ENDDO                                               
+0011.00 C                   EVAL      *INLR=*ON                                 
+0012.00 C     FILLSFL       BEGSR                                               
+0013.00 C                   EVAL      *IN59=*ON                                 
+0013.01 C** SFLCLR INDIC SET ON                                                 
+0014.00 C                   WRITE     QRYCTL     
+0015.01 C                   EVAL      *IN59=*OFF                            
+0016.00 C** SUBFILE CLEARED RRN INITIALIZED ABOVE                           
+0017.00 C** NOW POSITION REC-POINTER TO 1ST OF GIVEN DEPT AND READ          
+0018.00 C     QDEPT         SETLL     EMPREC                                
+0019.00 C     QDEPT         READE     EMPREC                                
+0020.00 C                   DOW       NOT %EOF                              
+0021.00 C                   EVAL      QRYRRN+=1                             
+0022.00 C                   WRITE     QRYSFL                                
+0023.00 C     QDEPT         READE     EMPREC                                
+0024.00 C                   ENDDO                                           
+0025.00 C                   EVAL      *IN57=*OFF                            
+0026.00 C                   IF        QRYRRN>0                              
+0027.00 C                   EVAL      *IN57=*ON                             
+0028.00 C                   ELSE                                            
+0029.00 C                   EVAL      MSG='NO SUCH DEPT'                    
+0030.00 C                   ENDIF                                           
+0031.00 C                   ENDSR                                           
+ ****************** End of data ****************************************                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
